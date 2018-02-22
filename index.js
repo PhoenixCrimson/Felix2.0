@@ -78,7 +78,7 @@ bot.on("message", async message => {
         let spec = args[0]
         if (!spec)  {
             connection.query("SELECT Name, Description FROM commands",function(error,result,fields) {
-                if (error) throw error
+                if (error) {console.log(error)}
                 console.log(result)
                 let names = []
                 let description = []
@@ -188,7 +188,7 @@ bot.on("message", async message => {
         //show
         if (sub === "show") {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) throw error
+                if (error) {console.log(error)}
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
