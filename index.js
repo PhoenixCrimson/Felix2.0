@@ -4,9 +4,9 @@ var bot = new Discord.Client()
 var config = require("./config.json")
 var connection = mysql.createConnection({
     host: "localhost",
-    user: "Felix",
+    user: "root",
     password: config.Databasepass,
-    database: "felix-chan"
+    database: "felixchan"
 })
 connection.connect()
 
