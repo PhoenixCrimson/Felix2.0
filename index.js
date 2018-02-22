@@ -20,7 +20,7 @@ bot.on("guildMemberAdd", member => {
     if (!channel){
         return
     }
-    channel.send(`Welcome to the server, ${member}`)
+    channel.send(`Welcome to ${member.guild.name}, ${member}. This is ${member.guild.owner}'s special place.`)
 })
 
 
@@ -78,7 +78,7 @@ bot.on("message", async message => {
         let spec = args[0]
         if (!spec)  {
             connection.query("SELECT Name, Description FROM commands",function(error,result,fields) {
-                if (error) {console.log(error)}
+                if (error) throw error
                 console.log(result)
                 let names = []
                 let description = []
@@ -119,9 +119,9 @@ bot.on("message", async message => {
                 .setThumbnail(bot.user.displayAvatarURL)
                 .setColor(color)
                 .addField("Main command","```"+prefix+"nighty <subclass>```")
-                .addField("Subclasses","mention\nme",true)
+                .addField("Subclasses","mention\n[nothing]",true)
                 .addField("It does what now?!","Wishes someone a good nighty\nNotifies the real world \nof your trip to the dream realm",true)
-                .addField("Usage","```"+prefix+"nighty <mention>```\n"+"```"+prefix+"nighty me```",true)
+                .addField("Usage","```"+prefix+"nighty <mention>```\n"+"```"+prefix+"nighty```",true)
             message.channel.send(embed)
         }
 
@@ -154,7 +154,7 @@ bot.on("message", async message => {
                 .addField("It does what now?!","It tells you all about",true)
             message.channel.send(embed)
         }
-    }
+        }
 
 
     
@@ -188,7 +188,7 @@ bot.on("message", async message => {
         //show
         if (sub === "show") {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) {console.log(error)}
+                if (error) throw error
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -212,9 +212,7 @@ bot.on("message", async message => {
         //promote
         if (sub === "promote")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) {
-                    console.log(error)
-                }
+                if (error) throw error
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -237,7 +235,7 @@ bot.on("message", async message => {
         //newclass
         if (sub === "newclass")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) {console.log(error)}
+                if (error) throw error
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -253,7 +251,7 @@ bot.on("message", async message => {
         //addkills
         if (sub === "addkills")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) {console.log(error)}
+                if (error) throw error
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -269,7 +267,7 @@ bot.on("message", async message => {
         //newcampaign
         if (sub === "newcampaign")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) {console.log(error)}
+                if (error) throw error
                 if (!(args[1] === "reset")) {
                     return message.reply("No changes have been made")
                     
@@ -280,7 +278,7 @@ bot.on("message", async message => {
         //leaderboard
         if (sub === "leaderboard")  {
             connection.query("SELECT * FROM xcom", function(error,result,fields)    {
-                if (error) {console.log(error)}
+                if (error) throw error
                 var board = result.sort(function(a,b){return b.Kills - a.Kills})
                 console.log(board)
                 var name_board = []
@@ -330,22 +328,19 @@ bot.on("message", async message => {
         message.delete()
         connection.connect(function(error)   {
             connection.query("SELECT Giflink FROM nightygifs", function(error, result, fields)  {
-                if (error) {console.log(error)}
+                if (error) throw error
                 let n = result.length
                 let N  = Math.floor(Math.random() * n)
 
 
-                if (args[0] === 'me')   {
+                
+                
+                if (!args[0])  {
                     var embed = new Discord.RichEmbed()
                         .setColor(color)
                         .setDescription("**" + message.author.username + "** is going to bed. Good nighty")
                         .setImage(result[N].Giflink)
                     message.channel.send(embed)
-                }
-                
-                
-                else if (!args[0])  {
-                    return message.reply("you have to wish someone a good nighty with this command.")
                 }
                 
                 
