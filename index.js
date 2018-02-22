@@ -212,7 +212,9 @@ bot.on("message", async message => {
         //promote
         if (sub === "promote")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) throw error
+                if (error) {
+                    console.log(error)
+                }
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -235,7 +237,7 @@ bot.on("message", async message => {
         //newclass
         if (sub === "newclass")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) throw error
+                if (error) {console.log(error)}
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -251,7 +253,7 @@ bot.on("message", async message => {
         //addkills
         if (sub === "addkills")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) throw error
+                if (error) {console.log(error)}
                 let name = args[1]
                 let soldier = result.find(function(element) {
                     return element.Name == name
@@ -267,7 +269,7 @@ bot.on("message", async message => {
         //newcampaign
         if (sub === "newcampaign")  {
             connection.query("SELECT * FROM xcom", function(error, result,fields)   {
-                if (error) throw error
+                if (error) {console.log(error)}
                 if (!(args[1] === "reset")) {
                     return message.reply("No changes have been made")
                     
@@ -278,7 +280,7 @@ bot.on("message", async message => {
         //leaderboard
         if (sub === "leaderboard")  {
             connection.query("SELECT * FROM xcom", function(error,result,fields)    {
-                if (error) throw error
+                if (error) {console.log(error)}
                 var board = result.sort(function(a,b){return b.Kills - a.Kills})
                 console.log(board)
                 var name_board = []
@@ -328,7 +330,7 @@ bot.on("message", async message => {
         message.delete()
         connection.connect(function(error)   {
             connection.query("SELECT Giflink FROM nightygifs", function(error, result, fields)  {
-                if (error) throw error
+                if (error) {console.log(error)}
                 let n = result.length
                 let N  = Math.floor(Math.random() * n)
 
