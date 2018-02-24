@@ -1,6 +1,8 @@
 {
 "TOKEN": "MzgwMDU2MjU0MTAzNjgzMDcy.DXBdcw.cMUuRWvLICMFw7UH4ANi2G3-C5E",
 "PREFIX": ",",
-"Databasepass": ""
-
+"Databasepass": "",
+"host": "localhost",
+"User": "root",
+"database": "felixchan"
 }

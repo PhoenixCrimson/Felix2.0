@@ -3,10 +3,10 @@ var mysql = require('mysql')
 var bot = new Discord.Client()
 var config = require("./config.json")
 var connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
+    host: config.host,
+    user: config.User,
     password: config.Databasepass,
-    database: "felixchan"
+    database: config.database
 })
 connection.connect()
 
@@ -119,7 +119,7 @@ bot.on("message", async message => {
                 .setThumbnail(bot.user.displayAvatarURL)
                 .setColor(color)
                 .addField("Main command","```"+prefix+"nighty <subclass>```")
-                .addField("Subclasses","mention\n[nothing]",true)
+                .addField("Subclasses","mention\n",true)
                 .addField("It does what now?!","Wishes someone a good nighty\nNotifies the real world \nof your trip to the dream realm",true)
                 .addField("Usage","```"+prefix+"nighty <mention>```\n"+"```"+prefix+"nighty```",true)
             message.channel.send(embed)
