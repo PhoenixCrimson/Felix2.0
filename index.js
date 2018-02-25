@@ -8,6 +8,27 @@ var connection = mysql.createConnection({
     password: config.Databasepass,
     database: config.database
 })
+var handleKFDisconnect = function() {
+    kfdb.on('error', function(err) {
+        if (!err.fatal) {
+            return;
+        }
+        if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+            console.log("PROTOCOL_CONNECTION_LOST");
+            throw err;
+        }
+        log.error("The database is error:" + err.stack);
+
+        kfdb = mysql.createConnection(kf_config);
+
+        console.log("kfid");
+
+        console.log(kfdb);
+        handleKFDisconnect();
+    });
+   };
+   handleKFDisconnect();
+
 connection.connect()
 
 bot.on("ready", async () =>   {
@@ -75,6 +96,7 @@ bot.on("message", async message => {
 
     // ,help
     if (cmd === `${prefix}help`)    {
+        message.delete()
         let spec = args[0]
         if (!spec)  {
             connection.query("SELECT Name, Description FROM commands",function(error,result,fields) {
@@ -160,6 +182,7 @@ bot.on("message", async message => {
     
     // ,xcom
     if (cmd === `${prefix}xcom`)    {
+        message.delete()
         let sub = args[0]
         //addnew
         if (sub === "addnew")   {
