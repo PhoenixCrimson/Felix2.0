@@ -13,7 +13,7 @@ var connection = mysql.createConnection(db_config)
 function keepAlive(){
       connection.query("SELECT Giflink FROM nightygifs", function(error, result, fields)  {
         if (error) console.log("test")
-        console.log("test")
+        //console.log("test")
         return
       })
     
