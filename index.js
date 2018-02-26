@@ -10,6 +10,16 @@ var db_config = {
 }
 var connection = mysql.createConnection(db_config)
 
+function keepAlive(){
+      connection.query("SELECT Giflink FROM nightygifs", function(error, result, fields)  {
+        if (error) console.log("test")
+        console.log("test")
+        return
+      })
+    
+      
+  }
+  setInterval(keepAlive, 3000);
 
 function handleDisconnect() {
     connection = mysql.createConnection(db_config); // Recreate the connection, since
@@ -25,7 +35,8 @@ function handleDisconnect() {
     connection.on('error', function(err) {
       console.log('db error', err);
       if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-        handleDisconnect();                         // lost due to either server restart, or a
+        handleDisconnect();
+        console.log("Connection reestablished")                         // lost due to either server restart, or a
       } else {                                      // connnection idle timeout (the wait_timeout
         console.log(err);                                  // server variable configures this)
       }
@@ -212,6 +223,7 @@ bot.on("message", async message => {
                     console.log(error)
                 }
             console.log("insert succesful")
+            message.reply(name + "has been added")
             })}
         //show
         if (sub === "show") {
@@ -225,7 +237,6 @@ bot.on("message", async message => {
                 if (!soldier)   {
                     return message.reply("This soldier is not known.")
                 }
-                console.log(soldier)
                 let embed = new Discord.RichEmbed()
                     .setThumbnail(soldier.Mugshot)
                     .setColor(color)
@@ -258,6 +269,7 @@ bot.on("message", async message => {
                 let newrank = ranks[n + 1]
                 connection.query("UPDATE xcom SET Rank ='" + newrank + "' WHERE ID = " + soldier.ID)
                 console.log("Promoted")
+                message.reply(name + "has been promoted to the rank of" + newrank)
             })}        
         
         //newclass
@@ -274,7 +286,7 @@ bot.on("message", async message => {
                 }
                 let newClass = args[2]
                 connection.query("UPDATE xcom SET Class ='" + newClass + "' WHERE ID = " + soldier.ID)
-                console.log("Class updated")
+                message.reply(name + "has been promoted to the class of" + newClass)
             })}   
         //addkills
         if (sub === "addkills")  {
@@ -290,7 +302,7 @@ bot.on("message", async message => {
                 }
                 let newkills = soldier.Kills + parseInt(args[2])
                 connection.query("UPDATE xcom SET Kills =" + newkills + ",Globalkills =" + newkills +" WHERE ID = " + soldier.ID)
-                console.log("Kills updated")
+                message.reply(name + "has gained" + parseInt(args[2]) + "kills.")
             })} 
         //newcampaign
         if (sub === "newcampaign")  {
@@ -308,7 +320,6 @@ bot.on("message", async message => {
             connection.query("SELECT * FROM xcom", function(error,result,fields)    {
                 if (error) throw error
                 var board = result.sort(function(a,b){return b.Kills - a.Kills})
-                console.log(board)
                 var name_board = []
                 var kills_board = []
                 var glob_board = []
@@ -322,7 +333,6 @@ bot.on("message", async message => {
                     rank_board.push(element.Rank)
                     class_board.push(element.Class)
                 })
-                console.log(name_board)
                 let embed = new Discord.RichEmbed()
                     .setDescription("XCOM leaderboard")
                     .setColor(color)
