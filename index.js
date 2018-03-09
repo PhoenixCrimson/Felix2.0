@@ -399,7 +399,7 @@ bot.on("message", async message => {
                     var embed = new Discord.RichEmbed()
                         .setColor(color)
                         .setDescription("**" + message.author.username + "** is going to bed. Good nighty")
-                        .setImage(result[-1].Giflink)
+                        .setImage(result[n - 1].Giflink)
                     message.channel.send(embed)
                     
                 }
