@@ -383,9 +383,9 @@ bot.on("message", async message => {
                 
                 
                 else if (args[0] === "add") {
-                    var link = {"Giflink": args[1]}
+                    var link = {"Giflink": args[-1]}
                     console.log("Adding new nighty gif")
-                    connection.query("INSERT INTO Nightygifs SET ?", link, function(error)  {
+                    connection.query("INSERT INTO nightygifs SET ?", link, function(error)  {
                         if (error)  {
                             console.log(error)
                             return
@@ -394,6 +394,14 @@ bot.on("message", async message => {
                     console.log("Succes")
                 }
                 
+                else if (args[0] == "force")    {
+                    var N = args[-1]
+                    var embed = new Discord.RichEmbed()
+                        .setColor(color)
+                        .setDescription("**" + message.author.username + "** is going to bed. Good nighty")
+                        .setImage(result[N].Giflink)
+                    message.channel.send(embed)
+                }
                 else {
                     var embed = new Discord.RichEmbed()
                         .setColor(color)
