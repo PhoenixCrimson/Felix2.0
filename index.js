@@ -395,7 +395,7 @@ bot.on("message", async message => {
                 }
                 
                 else if (args[0] == "force")    {
-                    var M = args[-1]
+                    var M = parseInt(args[-1])
                     var embed = new Discord.RichEmbed()
                         .setColor(color)
                         .setDescription("**" + message.author.username + "** is going to bed. Good nighty")
