@@ -395,11 +395,11 @@ bot.on("message", async message => {
                 }
                 
                 else if (args[0] == "force")    {
-                    var N = args[-1]
+                    var M = args[-1]
                     var embed = new Discord.RichEmbed()
                         .setColor(color)
                         .setDescription("**" + message.author.username + "** is going to bed. Good nighty")
-                        .setImage(result[N].Giflink)
+                        .setImage(result[M].Giflink)
                     message.channel.send(embed)
                 }
                 else {
