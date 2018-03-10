@@ -380,7 +380,7 @@ bot.on("message", async message => {
 
                         }
                     })
-                    connection.query("DELETE FROM nightygifs where Giflink = " + null)    
+                    connection.query("DELETE FROM nightygifs where Giflink = ")    
                     
                 }
 
