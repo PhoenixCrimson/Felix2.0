@@ -365,7 +365,7 @@ bot.on("message", async message => {
     if (cmd === `${prefix}nighty`)  {
         message.delete()
         connection.connect(function(error)   {
-            connection.query("SELECT Giflink FROM nightygifs", function(error, result, fields)  {
+            connection.query("SELECT * FROM nightygifs", function(error, result, fields)  {
                 if (error) throw error
                 let n = result.length
                 let N  = Math.floor(Math.random() * n)
