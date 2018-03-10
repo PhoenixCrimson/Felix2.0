@@ -371,6 +371,15 @@ bot.on("message", async message => {
                 let N  = Math.floor(Math.random() * n)
                 console.log(result)
 
+                function cleanup(array){
+                    array.forEach(function(entry)   {
+                        if (entry.Giflink == null)  {
+                            console.log(entry)
+                        }
+                    })
+                        
+                    
+                }
 
                 
                 
@@ -403,6 +412,11 @@ bot.on("message", async message => {
                         .setImage(result[n - 1].Giflink)
                     message.channel.send(embed)
                     
+                }
+
+                else if (args[0] == "clean")    {
+                    cleanup(result)
+
                 }
                 else {
                     var embed = new Discord.RichEmbed()
