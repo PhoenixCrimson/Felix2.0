@@ -375,6 +375,8 @@ bot.on("message", async message => {
                     array.forEach(function(entry)   {
                         if (entry.Giflink == null)  {
                             console.log(entry)
+                            console.log(array.indexOf(entry))
+
                         }
                     })
                         
