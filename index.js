@@ -369,6 +369,7 @@ bot.on("message", async message => {
                 if (error) throw error
                 let n = result.length
                 let N  = Math.floor(Math.random() * n)
+                console.log(result)
 
 
                 
