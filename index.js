@@ -376,10 +376,11 @@ bot.on("message", async message => {
                         if (entry.Giflink == null)  {
                             console.log(entry)
                             console.log(array.indexOf(entry))
+                            
 
                         }
                     })
-                        
+                    connection.query("DELETE * FROM nightygifs where Giflink = " + null)    
                     
                 }
 
