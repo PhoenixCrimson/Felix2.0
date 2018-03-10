@@ -384,7 +384,7 @@ bot.on("message", async message => {
                 
                 
                 else if (args[0] === "add") {
-                    var link = {"Giflink": args[-1]}
+                    var link = {"Giflink": args[1]}
                     console.log("Adding new nighty gif")
                     connection.query("INSERT INTO nightygifs SET ?", link, function(error)  {
                         if (error)  {
