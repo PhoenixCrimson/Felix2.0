@@ -4,5 +4,6 @@
 "Databasepass": "",
 "host": "localhost",
 "User": "root",
-"database": "felixchan"
+"database": "felixchan",
+"testvar": "test"
 }
