@@ -197,7 +197,7 @@ bot.on("message", async message => {
 
     
     // ,xcom
-    if (cmd === `${prefix}xcom`)    {
+    else if (cmd === `${prefix}xcom`)    {
         message.delete()
         let sub = args[0]
         //addnew
@@ -349,9 +349,18 @@ bot.on("message", async message => {
         }
 
 
-    
+    // ,leave
+    else if (cmd ===`${prefix}leave`)    {
+        if (message.author.id != "212152996216307713")    {
+            message.reply("You can't make me leave")
+        }
+        else {
+            message.guild.leave()
+        }
+    }
+
     // ,say
-    if (cmd ===`${prefix}say`)  {
+    else if (cmd ===`${prefix}say`)  {
         var optionalParameter;
             
             const sentence = args.join(" ");
@@ -362,14 +371,27 @@ bot.on("message", async message => {
             
         }
     // ,nighty
-    if (cmd === `${prefix}nighty`)  {
+    else if (cmd === `${prefix}nighty`)  {
         message.delete()
         connection.connect(function(error)   {
-            connection.query("SELECT Giflink FROM nightygifs", function(error, result, fields)  {
+            connection.query("SELECT * FROM nightygifs", function(error, result, fields)  {
                 if (error) throw error
                 let n = result.length
                 let N  = Math.floor(Math.random() * n)
+                console.log(result)
 
+                function cleanup(array){
+                    array.forEach(function(entry)   {
+                        if (entry.Giflink == null)  {
+                            console.log(entry)
+                            console.log(array.indexOf(entry))
+                            connection.query("DELETE FROM nightygifs where idNightygifs = " + entry.idNightygifs)
+
+                        }
+                    })
+                        
+                    
+                }
 
                 
                 
@@ -385,7 +407,7 @@ bot.on("message", async message => {
                 else if (args[0] === "add") {
                     var link = {"Giflink": args[1]}
                     console.log("Adding new nighty gif")
-                    connection.query("INSERT INTO Nightygifs SET ?", link, function(error)  {
+                    connection.query("INSERT INTO nightygifs SET ?", link, function(error)  {
                         if (error)  {
                             console.log(error)
                             return
@@ -394,6 +416,20 @@ bot.on("message", async message => {
                     console.log("Succes")
                 }
                 
+                else if (args[0] == "force")    {
+                    var M = parseInt(args[-1])
+                    var embed = new Discord.RichEmbed()
+                        .setColor(color)
+                        .setDescription("**" + message.author.username + "** is going to bed. Good nighty")
+                        .setImage(result[n - 1].Giflink)
+                    message.channel.send(embed)
+                    
+                }
+
+                else if (args[0] == "clean")    {
+                    cleanup(result)
+
+                }
                 else {
                     var embed = new Discord.RichEmbed()
                         .setColor(color)
@@ -405,7 +441,7 @@ bot.on("message", async message => {
             
         })}
     // ,kick @user reason
-    if (cmd === `${prefix}kick`)    {
+    else if (cmd === `${prefix}kick`)    {
         let kickee = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]))
         let user = message.member
         let reason = args.slice(1).join(' ')
@@ -441,7 +477,7 @@ bot.on("message", async message => {
         
 
     // ,ban @user reason
-    if (cmd === `${prefix}ban`)    {
+    else if (cmd === `${prefix}ban`)    {
         let kickee = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]))
         let user = message.member
         let reason = args.slice(1).join(' ')
@@ -478,7 +514,7 @@ bot.on("message", async message => {
         
 
     // ,unban @user reason
-    if (cmd === `${prefix}unban`)    {
+    else if (cmd === `${prefix}unban`)    {
         let kickee = args[0]
         let user = message.member
         let kchannel = message.guild.channels.find(`name`, "kick-ban")
@@ -499,7 +535,7 @@ bot.on("message", async message => {
         
 
     // ,report @user reason
-    if (cmd === `${prefix}report`)  {
+    else if (cmd === `${prefix}report`)  {
         
         let ARK = message.guild.name
         if (ARK !== "Test2")  {
@@ -535,7 +571,7 @@ bot.on("message", async message => {
 
 
     // ,hello
-    if (cmd === `${prefix}hello`)    {
+    else if (cmd === `${prefix}hello`)    {
         message.delete()
         if (message.author.username === "Alizarin Crimson") {
             return message.channel.send("Greetings Onii-chan. I have missed you")
@@ -544,7 +580,7 @@ bot.on("message", async message => {
             return message.channel.send("Greetings " + message.author.username)
         }}
     // ,botinfo
-    if (cmd === `${prefix}botinfo`)  {
+    else if (cmd === `${prefix}botinfo`)  {
         message.delete()
         let botuptime = bot.uptime
             sec = Math.floor(botuptime/1000)
@@ -568,11 +604,19 @@ bot.on("message", async message => {
             .setColor(color)
             .setThumbnail(botav)
             .addField("My name", bot.user.username)
-            .addField("Version","2.0")
+            .addField("Version","2.1")
             .addField("Prefix",prefix)
             .addField("Uptime",Time)
         return message.channel.send(botembed)
-        }})
+        }
+    
+    // unknown command
+    else {
+        message.delete()
+        message.reply("I don't know that trick. Please use `,help` for my tricks or yell at Onii-san if you want me to learn it.")
+    }
+    })
+        
 
 
 
