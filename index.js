@@ -611,10 +611,10 @@ bot.on("message", async message => {
         }
     
     // unknown command
-    else {
-        message.delete()
-        message.reply("I don't know that trick. Please use `,help` for my tricks or yell at Onii-san if you want me to learn it.")
-    }
+    //else {
+    //   message.delete()
+    //    message.reply("I don't know that trick. Please use `,help` for my tricks or yell at Onii-san if you want me to learn it.")
+    //}
     })
         
 
