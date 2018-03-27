@@ -229,14 +229,11 @@ bot.on("message", async message => {
         message.delete()
         //Subclass: Setup
         if (sub === "setup")    {
-            if (Setup != 1){
+            
                 message.reply("Setting up runes command")
                 connection.query("CREATE TABLE `felix-chan`.`runes` (`ID` INT NOT NULL AUTO_INCREMENT,`AuthorID` VARCHAR(512) NULL,`AuthorName` VARCHAR(512) NULL,`PageName` VARCHAR(512) NULL,`PagePic` VARCHAR(512) NULL,`PageDescription` VARCHAR(512) NULL,PRIMARY KEY (`ID`));")
                 message.reply("Setup complete")
-            }
-            else    {
-                message.reply("Setup already done.")
-            }
+            
         }
         //Subclass: New (adds blank page)
         if (sub === "new")  {
