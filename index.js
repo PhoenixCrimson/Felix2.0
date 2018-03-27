@@ -217,7 +217,7 @@ bot.on("message", async message => {
                 .setColor(color)
                 .addField("Main Command","```"+prefix+"runes <subcommand>```")
                 .addField("Usage","```"+prefix+"runes new``` \n```"+prefix+"runes rename <pageID> <name>``` \n```"+prefix+"runes changepic <pageID> <imagelink>``` \n```"+prefix+"runes changedesc <pageID> <description>``` \n```"+prefix+"runes show <pageID>```\n```"+prefix+"runes list```",true)
-                .addField("What does it do?","Creates a new page\nRenames the page\nChanges the image\nChanges the description\nShows the selected page",true)
+                .addField("What does it do?","Creates a new page\nRenames the page\nChanges the image\nChanges the description\nShows the selected page\nLists all pages",true)
             message.channel.send(embed)
         }
         }
