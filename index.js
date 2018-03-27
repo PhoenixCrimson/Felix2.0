@@ -231,7 +231,7 @@ bot.on("message", async message => {
         if (sub === "setup")    {
             
                 message.reply("Setting up runes command")
-                connection.query("CREATE TABLE `felix-chan`.`runes` (`ID` INT NOT NULL AUTO_INCREMENT,`AuthorID` VARCHAR(512) NULL,`AuthorName` VARCHAR(512) NULL,`PageName` VARCHAR(512) NULL,`PagePic` VARCHAR(512) NULL,`PageDescription` VARCHAR(512) NULL,PRIMARY KEY (`ID`));")
+                connection.query("CREATE TABLE `felixchan`.`runes` (`ID` INT NOT NULL AUTO_INCREMENT,`AuthorID` VARCHAR(512) NULL,`AuthorName` VARCHAR(512) NULL,`PageName` VARCHAR(512) NULL,`PagePic` VARCHAR(512) NULL,`PageDescription` VARCHAR(512) NULL,PRIMARY KEY (`ID`));")
                 message.reply("Setup complete")
             
         }
