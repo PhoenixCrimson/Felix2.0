@@ -43,7 +43,7 @@ function handleDisconnect() {
     });
   }
   
-  handleDisconnect();
+  //handleDisconnect();
 
 connection.connect()
 
@@ -138,7 +138,25 @@ bot.on("message", async message => {
 
             })
         }
-
+        
+        if (spec === "addcommand")  {
+            Cmd = args[1]
+            Description = args.splice(2).join(" ")
+            var embed = new Discord.RichEmbed()
+                .setTitle("Command: "+Cmd )
+                .setDescription("Description: " + Description)
+            message.channel.send(embed)
+            var data = {
+                "Name":Cmd,
+                "Description":Description
+            }
+            connection.query("INSERT INTO commands SET ?", data, function(error)  {
+                if (error)  {
+                    console.log(error)
+                    return
+                }})
+            message.reply("Command added")
+        }
         if (spec === "xcom")    {
             let embed = new Discord.RichEmbed()
                 .setTitle("Help for xcom")
@@ -189,12 +207,120 @@ bot.on("message", async message => {
                 .setThumbnail(bot.user.displayAvatarURL)
                 .setColor(color)
                 .addField("Main command","```"+prefix+"botinfo```")
-                .addField("It does what now?!","It tells you all about",true)
+                .addField("It does what now?!","It tells you all about me",true)
+            message.channel.send(embed)
+        }
+        if (spec == "runes") {
+            let embed = new Discord.RichEmbed()
+                .setTitle("Help for runes")
+                .setThumbnail(bot.user.displayAvatarURL)
+                .setColor(color)
+                .addField("Main Command","```"+prefix+"runes <subcommand>```")
+                .addField("Usage","```"+prefix+"runes rename <pageID> <name>``` \n```"+prefix+"runes changepic <pageID> <imagelink>``` \n```"+prefix+"runes changedesc <pageID> <description>``` \n```"+prefix+"runes show <pageID>```",true)
+                .addField("What does it do?","Creates a new page\nRenames the page\nChanges the image\nChanges the description\nShows the selected page",true)
             message.channel.send(embed)
         }
         }
 
+    // ,runes
+    else if (cmd === `${prefix}runes`)  {
+        //Designate Subclass
+        var sub = args[0]
+        message.delete()
+        //Subclass: Setup
+        if (sub === "setup")    {
+            if (Setup != 1){
+                message.reply("Setting up runes command")
+                connection.query("CREATE TABLE `felix-chan`.`runes` (`ID` INT NOT NULL AUTO_INCREMENT,`AuthorID` VARCHAR(512) NULL,`AuthorName` VARCHAR(512) NULL,`PageName` VARCHAR(512) NULL,`PagePic` VARCHAR(512) NULL,`PageDescription` VARCHAR(512) NULL,PRIMARY KEY (`ID`));")
+                message.reply("Setup complete")
+            }
+            else    {
+                message.reply("Setup already done.")
+            }
+        }
+        //Subclass: New (adds blank page)
+        if (sub === "new")  {
+            message.reply("Adding new page")
+            var info = {
+                "AuthorID":message.author.id,
+                "AuthorName":message.author.username
+            }
+            connection.query("INSERT INTO runes SET ?", info, function(error)  {
+                if (error)  {
+                    console.log(error)
+                    return
+                }})
+            message.reply("Page added")
+        }
+        //Subclass: Rename (renames a page)
+        if (sub === "rename")   {
+            
+            
+                ID = parseInt(args[1])
+                Title = args.splice(2)
+                Title2 = Title.join(" ")
+                
+                  
+                connection.query("UPDATE runes SET PageName ='" +Title2+"'WHERE ID = "+ID)
+            
+        }
+        if (sub === "changepic")    {
+            imglink = args[2]
+            ID = parseInt(args[1])
 
+            connection.query("UPDATE runes SET PagePic = '" + imglink + "'WHERE ID = "+ID)
+        }
+        if (sub === "changedesc")   {
+            ID = parseInt(args[1])
+            Descr = args.splice(2).join(" ")
+            connection.query("UPDATE runes SET PageDescription = '" + Descr + "'WHERE ID = "+ID)
+        }
+        if (sub === "show") {
+            connection.query("SELECT * FROM runes", function(error, result,fields)   {
+                if (error) throw error
+                let ID = args[1]
+                let page = result.find(function(element) {
+                    return element.ID == ID
+                    
+                })
+                if (!page)   {
+                    return message.reply("This page does not exist.")
+                }
+                let embed = new Discord.RichEmbed()
+                    .setColor(color)
+                    .addField("Name",page.PageName)
+                    .addField("Author",page.AuthorName)
+                    .addField("Description",page.PageDescription)
+                    .setImage(page.PagePic)
+                    message.channel.send(embed)
+            })
+        }
+        if (sub === "list") {
+            connection.query("SELECT ID, AuthorName, PageName FROM runes",function(error, result,fields)   {
+                if (error) throw error
+                
+                var IDs = []
+                var Pagenames = []
+                var Authors = []
+                
+                result.forEach(function(element) {
+                    IDs.push(element.ID)
+                    Pagenames.push(element.PageName)
+                    Authors.push(element.AuthorName)
+                    
+                
+                })
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Rune list")
+                    .setColor(color)
+                    .addField("ID",IDs,true)
+                    .addField("Pagename",Pagenames,true)
+                    //.addField("Creator",Authors,true)
+                message.channel.send(embed)
+
+        })}
+    }
+    
     
     // ,xcom
     else if (cmd === `${prefix}xcom`)    {
@@ -357,7 +483,7 @@ bot.on("message", async message => {
         else {
             message.guild.leave()
         }
-    }
+        }
 
     // ,say
     else if (cmd ===`${prefix}say`)  {
@@ -612,7 +738,7 @@ bot.on("message", async message => {
     
     // unknown command
     //else {
-    //   message.delete()
+    //    message.delete()
     //    message.reply("I don't know that trick. Please use `,help` for my tricks or yell at Onii-san if you want me to learn it.")
     //}
     })
